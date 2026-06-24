@@ -1,0 +1,1093 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AfriLingo | Professional African Language Tutoring</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <style>
+        :root {
+            --brand-amber: #f59e0b;
+            --brand-dark: #0f172a;
+        }
+        
+        body { 
+            font-family: 'Inter', system-ui, -apple-system, sans-serif; 
+            scroll-behavior: smooth; 
+            background-color: #f8fafc;
+            color: #0f172a;
+            overflow-x: hidden;
+        }
+
+        .selection-brand *::selection { background-color: #fde68a; color: #78350f; }
+        
+        /* Custom Premium Scrollbar */
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: #f1f5f9; border-radius: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+        
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+        /* Keyframe Animations */
+        @keyframes marquee { 0% { transform: translateX(0%); } 100% { transform: translateX(-50%); } }
+        .animate-marquee { display: inline-block; animation: marquee 25s linear infinite; }
+        
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        .fade-in { animation: fadeIn 0.3s ease-in-out forwards; }
+        
+        @keyframes slideInRight { from { transform: translateX(120%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+        .slide-in-right { animation: slideInRight 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+        
+        @keyframes slideOutRight { from { transform: translateX(0); opacity: 1; } to { transform: translateX(120%); opacity: 0; } }
+        .slide-out-right { animation: slideOutRight 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+
+        @keyframes zoomIn { from { transform: scale(0.95); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+        .zoom-in { animation: zoomIn 0.2s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+
+        .hidden-view { display: none !important; }
+        
+        /* Compact Utilities */
+        .glass { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(8px); border-bottom: 1px solid rgba(226, 232, 240, 0.8); }
+    </style>
+</head>
+<body class="selection-brand flex flex-col min-h-screen">
+
+    <!-- Top-Right Notifications -->
+    <div id="toast-container" class="fixed top-20 right-4 z-[9999] flex flex-col gap-3 pointer-events-none"></div>
+
+    <!-- Header -->
+    <header class="fixed top-0 w-full glass z-50 transition-all duration-300" id="main-header">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6">
+            <div class="flex justify-between h-16 items-center">
+                <!-- Logo -->
+                <div class="flex items-center cursor-pointer group" onclick="App.router.navigate(App.state.user ? 'dashboard' : 'home')">
+                    <div class="w-8 h-8 bg-amber-500 rounded-lg flex items-center justify-center text-white shadow-md group-hover:scale-105 transition">
+                        <i data-lucide="globe" class="w-5 h-5"></i>
+                    </div>
+                    <span class="ml-2 text-xl font-black tracking-tight text-slate-900">Afri<span class="text-amber-500">Lingo</span></span>
+                </div>
+                
+                <!-- Desktop Navigation Links -->
+                <nav id="desktop-nav" class="hidden md:flex space-x-6 items-center"></nav>
+
+                <!-- Desktop Auth / User Controls -->
+                <div class="hidden md:flex items-center space-x-4" id="nav-auth-container"></div>
+
+                <!-- Mobile Menu Toggle -->
+                <div class="md:hidden flex items-center z-50">
+                    <button onclick="App.ui.toggleMobileMenu()" class="text-slate-600 p-2 hover:bg-slate-100 rounded-lg transition relative z-50">
+                        <i data-lucide="menu" id="mobile-menu-icon" class="w-6 h-6"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Menu Dropdown -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-b border-slate-200 absolute w-full top-16 left-0 z-40 shadow-xl origin-top transition-all">
+            <div class="px-4 py-4 space-y-1" id="mobile-nav-items"></div>
+        </div>
+    </header>
+
+    <!-- Main Content App Root -->
+    <main class="pt-16 flex-1 flex flex-col relative w-full h-full" id="app-root">
+        
+        <!-- ================= HOME VIEW ================= -->
+        <section id="view-home" class="view-section w-full">
+            <!-- Compact Hero -->
+            <div class="relative bg-slate-950 text-white overflow-hidden min-h-[85vh] flex items-center">
+                <div class="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1523805009345-7448845a9e53?q=80&w=2000&auto=format&fit=crop')] opacity-10 bg-cover bg-center"></div>
+                <div class="absolute inset-0 bg-gradient-to-br from-amber-600/20 to-slate-900/90"></div>
+                
+                <div class="max-w-6xl mx-auto px-4 sm:px-6 relative z-10 grid md:grid-cols-2 gap-10 items-center w-full py-12">
+                    <div class="fade-in">
+                        <div class="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-bold bg-amber-500/20 text-amber-400 mb-6 border border-amber-500/30">
+                            <span class="w-1.5 h-1.5 rounded-full bg-amber-400 mr-2 animate-pulse"></span> 50+ African Nations
+                        </div>
+                        <h1 class="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight mb-6 leading-[1.1]">
+                            Master African <br /> Languages with <br />
+                            <span class="text-transparent bg-clip-text bg-gradient-to-r from-amber-400 to-orange-500">Native Speakers.</span>
+                        </h1>
+                        <p class="text-lg text-slate-300 mb-8 leading-relaxed max-w-md font-medium">
+                            Connect instantly with verified tutors for conversational practice in Swahili, Yoruba, Zulu, and more.
+                        </p>
+                        <div class="flex flex-col sm:flex-row gap-3">
+                            <button onclick="App.state.user ? App.router.navigate('connect') : App.ui.openAuthModal('register', 'Learner')" class="px-6 py-3.5 bg-amber-500 text-slate-900 rounded-xl font-bold text-base hover:bg-amber-400 transition-all shadow-lg shadow-amber-500/30 flex items-center justify-center gap-2">
+                                Start Learning <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                            </button>
+                            <button onclick="App.router.navigate('how')" class="px-6 py-3.5 bg-white/10 text-white rounded-xl font-bold text-base hover:bg-white/20 transition-all border border-white/20 backdrop-blur-sm flex items-center justify-center gap-2">
+                                Become a Tutor
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="hidden md:block relative fade-in" style="animation-delay: 0.2s">
+                        <div class="relative w-[320px] lg:w-[380px] h-[450px] bg-white rounded-2xl shadow-2xl ml-auto border border-slate-200 overflow-hidden flex flex-col">
+                            <div class="bg-slate-50 p-3 border-b border-slate-200 flex items-center gap-3">
+                                <div class="relative">
+                                    <img src="https://i.pravatar.cc/150?u=aisha" class="w-10 h-10 rounded-full object-cover">
+                                    <div class="absolute bottom-0 right-0 w-2.5 h-2.5 bg-emerald-500 border-2 border-white rounded-full"></div>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-slate-900 text-sm">Aisha K.</h4>
+                                    <p class="text-[10px] text-slate-500 font-medium">Swahili Tutor</p>
+                                </div>
+                                <div class="ml-auto bg-amber-100 text-amber-700 px-2 py-1 rounded font-bold text-[10px]">$12/hr</div>
+                            </div>
+                            <div class="flex-1 p-4 space-y-3 bg-slate-100/50 relative">
+                                <div class="flex justify-start"><div class="bg-white border border-slate-200 p-2.5 rounded-xl rounded-tl-sm shadow-sm max-w-[85%] text-xs text-slate-700">Jambo! Are you ready for our lesson today?</div></div>
+                                <div class="flex justify-end"><div class="bg-amber-500 text-amber-950 p-2.5 rounded-xl rounded-tr-sm shadow-sm max-w-[85%] text-xs font-medium">Ndiyo! I have been practicing my greetings.</div></div>
+                                <div class="flex justify-start"><div class="bg-white border border-slate-200 p-2.5 rounded-xl rounded-tl-sm shadow-sm max-w-[85%] text-xs text-slate-700">Vizuri sana! Let's start a video call.</div></div>
+                                
+                                <div class="absolute bottom-4 left-4 right-4 bg-slate-900 text-white rounded-xl p-3 flex justify-between items-center shadow-lg">
+                                    <div class="flex items-center gap-2">
+                                        <i data-lucide="video" class="w-4 h-4 text-emerald-400 animate-pulse"></i>
+                                        <span class="text-xs font-bold">Incoming Call</span>
+                                    </div>
+                                    <button class="bg-emerald-500 px-3 py-1.5 rounded-lg text-xs font-bold">Accept</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Ticker -->
+            <div class="bg-amber-500 text-amber-950 py-2 overflow-hidden whitespace-nowrap border-y border-amber-600">
+                <div id="home-ticker" class="animate-marquee text-sm font-bold tracking-wide"></div>
+            </div>
+
+            <!-- Stats -->
+            <div class="py-12 bg-white border-b border-slate-100">
+                <div class="max-w-6xl mx-auto px-4 sm:px-6">
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-6 text-center divide-x divide-slate-100">
+                        <div><div class="text-3xl font-black text-slate-900">50+</div><div class="text-slate-500 text-xs font-bold uppercase mt-1">Languages</div></div>
+                        <div><div class="text-3xl font-black text-slate-900">12k</div><div class="text-slate-500 text-xs font-bold uppercase mt-1">Active Tutors</div></div>
+                        <div><div class="text-3xl font-black text-slate-900">1M+</div><div class="text-slate-500 text-xs font-bold uppercase mt-1">Lessons Done</div></div>
+                        <div><div class="text-3xl font-black text-slate-900">4.9</div><div class="text-slate-500 text-xs font-bold uppercase mt-1">User Rating</div></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Features -->
+            <div class="py-16 bg-slate-50">
+                <div class="max-w-6xl mx-auto px-4 sm:px-6">
+                    <div class="text-center max-w-2xl mx-auto mb-12">
+                        <h2 class="text-3xl font-black text-slate-900 mb-4">Why choose AfriLingo?</h2>
+                        <p class="text-base text-slate-600">We bridge the gap between global curiosity and African cultural richness through a seamless platform.</p>
+                    </div>
+                    <div class="grid md:grid-cols-3 gap-6">
+                        <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
+                            <div class="w-12 h-12 bg-amber-100 text-amber-600 rounded-xl flex items-center justify-center mb-4"><i data-lucide="video" class="w-6 h-6"></i></div>
+                            <h3 class="text-lg font-bold text-slate-900 mb-2">Immersive Live Calls</h3>
+                            <p class="text-slate-600 text-sm leading-relaxed">Practice speaking directly with your tutor through our built-in video and audio calling features.</p>
+                        </div>
+                        <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
+                            <div class="w-12 h-12 bg-emerald-100 text-emerald-600 rounded-xl flex items-center justify-center mb-4"><i data-lucide="shield-check" class="w-6 h-6"></i></div>
+                            <h3 class="text-lg font-bold text-slate-900 mb-2">Verified Native Tutors</h3>
+                            <p class="text-slate-600 text-sm leading-relaxed">Every tutor undergoes strict identity verification and an M-PESA activation process.</p>
+                        </div>
+                        <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
+                            <div class="w-12 h-12 bg-blue-100 text-blue-600 rounded-xl flex items-center justify-center mb-4"><i data-lucide="wallet" class="w-6 h-6"></i></div>
+                            <h3 class="text-lg font-bold text-slate-900 mb-2">Secure Wallet System</h3>
+                            <p class="text-slate-600 text-sm leading-relaxed">Deposit via Paybill 542542, and tutors withdraw directly to M-PESA with real-time conversion.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Testimonials -->
+            <div class="py-16 bg-slate-900 text-white">
+                <div class="max-w-6xl mx-auto px-4 sm:px-6">
+                    <div class="text-center mb-12"><h2 class="text-3xl font-black">Voices of Success</h2></div>
+                    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <div class="bg-slate-800 p-6 rounded-2xl border border-slate-700">
+                            <i data-lucide="quote" class="w-8 h-8 text-slate-600 mb-4"></i>
+                            <p class="text-slate-300 text-sm italic mb-6">"Teaching Swahili has given me financial independence. Withdrawal to M-PESA is instant."</p>
+                            <div class="flex items-center gap-3">
+                                <img src="https://i.pravatar.cc/150?u=mwangi" class="w-10 h-10 rounded-full border border-amber-500">
+                                <div><h4 class="font-bold text-sm">Mwangi K.</h4><p class="text-[10px] text-amber-400">Tutor • Kenya</p></div>
+                            </div>
+                        </div>
+                        <div class="bg-slate-800 p-6 rounded-2xl border border-slate-700">
+                            <i data-lucide="quote" class="w-8 h-8 text-slate-600 mb-4"></i>
+                            <p class="text-slate-300 text-sm italic mb-6">"I wanted to connect with my heritage. The Yoruba lessons are authentic and the system is smooth."</p>
+                            <div class="flex items-center gap-3">
+                                <img src="https://i.pravatar.cc/150?u=michael" class="w-10 h-10 rounded-full border border-emerald-500">
+                                <div><h4 class="font-bold text-sm">Michael Ade</h4><p class="text-[10px] text-emerald-400">Learner • UK</p></div>
+                            </div>
+                        </div>
+                        <div class="bg-slate-800 p-6 rounded-2xl border border-slate-700 hidden lg:block">
+                            <i data-lucide="quote" class="w-8 h-8 text-slate-600 mb-4"></i>
+                            <p class="text-slate-300 text-sm italic mb-6">"The best platform for African languages. I love knowing my money directly supports the local economy."</p>
+                            <div class="flex items-center gap-3">
+                                <img src="https://i.pravatar.cc/150?u=elena" class="w-10 h-10 rounded-full border border-emerald-500">
+                                <div><h4 class="font-bold text-sm">Elena Rossi</h4><p class="text-[10px] text-emerald-400">Learner • Italy</p></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Footer -->
+            <footer class="bg-slate-950 text-slate-400 py-10 border-t border-slate-900">
+                <div class="max-w-6xl mx-auto px-4 text-center">
+                    <p class="text-sm font-medium">&copy; 2026 AfriLingo. Built for cultural and financial empowerment.</p>
+                </div>
+            </footer>
+        </section>
+
+        <!-- ================= HOW IT WORKS VIEW ================= -->
+        <section id="view-how" class="view-section hidden-view w-full">
+            <div class="max-w-4xl mx-auto px-4 py-12">
+                <div class="text-center mb-12">
+                    <h1 class="text-3xl font-black text-slate-900 mb-4">How AfriLingo Works</h1>
+                    <p class="text-base text-slate-600 max-w-2xl mx-auto">A seamless ecosystem connecting passionate tutors in Africa with eager learners worldwide.</p>
+                </div>
+                
+                <div class="grid md:grid-cols-2 gap-8">
+                    <!-- Tutors -->
+                    <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
+                        <h2 class="text-xl font-black text-slate-900 mb-6 flex items-center gap-2"><i data-lucide="mic" class="text-amber-600 w-5 h-5"></i> For Tutors</h2>
+                        <div class="space-y-4">
+                            <div class="flex gap-3"><div class="w-8 h-8 rounded-lg bg-slate-100 flex items-center justify-center font-black text-sm shrink-0">1</div><div><h3 class="font-bold text-sm text-slate-900">Register & Activate</h3><p class="text-slate-600 text-xs mt-1">Pay a 100 KES verification fee via M-PESA.</p></div></div>
+                            <div class="flex gap-3"><div class="w-8 h-8 rounded-lg bg-slate-100 flex items-center justify-center font-black text-sm shrink-0">2</div><div><h3 class="font-bold text-sm text-slate-900">Set Your Rate</h3><p class="text-slate-600 text-xs mt-1">Determine your hourly rate in USD.</p></div></div>
+                            <div class="flex gap-3"><div class="w-8 h-8 rounded-lg bg-slate-100 flex items-center justify-center font-black text-sm shrink-0">3</div><div><h3 class="font-bold text-sm text-slate-900">Accept Bookings</h3><p class="text-slate-600 text-xs mt-1">Accept requests to unlock chat and calls.</p></div></div>
+                            <div class="flex gap-3"><div class="w-8 h-8 rounded-lg bg-slate-100 flex items-center justify-center font-black text-sm shrink-0">4</div><div><h3 class="font-bold text-sm text-slate-900">Withdraw Earnings</h3><p class="text-slate-600 text-xs mt-1">Withdraw USD directly to M-PESA.</p></div></div>
+                        </div>
+                    </div>
+
+                    <!-- Learners -->
+                    <div class="bg-slate-900 p-6 rounded-2xl shadow-sm text-white border border-slate-800">
+                        <h2 class="text-xl font-black mb-6 flex items-center gap-2"><i data-lucide="globe" class="text-blue-400 w-5 h-5"></i> For Learners</h2>
+                        <div class="space-y-4">
+                            <div class="flex gap-3"><div class="w-8 h-8 rounded-lg bg-slate-800 text-amber-400 flex items-center justify-center font-black text-sm shrink-0">1</div><div><h3 class="font-bold text-sm">Find a Tutor</h3><p class="text-slate-400 text-xs mt-1">Browse our directory of native speakers.</p></div></div>
+                            <div class="flex gap-3"><div class="w-8 h-8 rounded-lg bg-slate-800 text-amber-400 flex items-center justify-center font-black text-sm shrink-0">2</div><div><h3 class="font-bold text-sm">Deposit Funds</h3><p class="text-slate-400 text-xs mt-1">Add USD via secure M-PESA Paybill.</p></div></div>
+                            <div class="flex gap-3"><div class="w-8 h-8 rounded-lg bg-slate-800 text-amber-400 flex items-center justify-center font-black text-sm shrink-0">3</div><div><h3 class="font-bold text-sm">Book Lesson</h3><p class="text-slate-400 text-xs mt-1">Pay the tutor's rate to unlock communication.</p></div></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= DASHBOARD VIEW ================= -->
+        <section id="view-dashboard" class="view-section hidden-view w-full">
+            <div class="max-w-5xl mx-auto px-4 py-8">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
+                    <div>
+                        <h1 class="text-2xl font-black text-slate-900 tracking-tight" id="dash-welcome">Welcome back!</h1>
+                        <p class="text-slate-500 text-sm mt-1" id="dash-info">Role: <strong>--</strong></p>
+                    </div>
+                    <button onclick="App.router.navigate('connect')" class="bg-slate-900 text-white px-5 py-2.5 rounded-xl font-bold text-sm hover:bg-slate-800 transition flex items-center gap-2 shadow-sm w-full sm:w-auto justify-center">
+                        Find Connections <i data-lucide="search" class="w-4 h-4"></i>
+                    </button>
+                </div>
+
+                <div class="grid md:grid-cols-3 gap-6">
+                    <!-- Stats Area -->
+                    <div class="md:col-span-2 grid sm:grid-cols-2 gap-4">
+                        <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-between">
+                            <div class="flex justify-between items-start mb-4">
+                                <div class="w-10 h-10 bg-emerald-100 text-emerald-600 rounded-lg flex items-center justify-center"><i data-lucide="wallet" class="w-5 h-5"></i></div>
+                                <button onclick="App.router.navigate('wallet')" class="text-xs font-bold text-emerald-700 bg-emerald-50 px-3 py-1.5 rounded-full hover:bg-emerald-100 transition">Manage</button>
+                            </div>
+                            <div>
+                                <p class="text-slate-500 font-bold uppercase tracking-wider text-[10px] mb-1">Wallet Balance</p>
+                                <h2 class="text-3xl font-black text-slate-900" id="dash-balance">$0.00</h2>
+                                <p class="text-xs font-bold text-slate-400 mt-2" id="dash-kes-balance">≈ KES 0.00</p>
+                            </div>
+                        </div>
+
+                        <div class="bg-slate-900 p-6 rounded-2xl shadow-sm flex flex-col justify-between text-white">
+                            <div class="flex justify-between items-start mb-4">
+                                <div class="w-10 h-10 bg-slate-800 text-amber-400 border border-slate-700 rounded-lg flex items-center justify-center"><i data-lucide="clock" class="w-5 h-5"></i></div>
+                            </div>
+                            <div>
+                                <p class="text-slate-400 font-bold uppercase tracking-wider text-[10px] mb-1">Upcoming Sessions</p>
+                                <h2 class="text-3xl font-black">2</h2>
+                                <p class="text-xs text-amber-400 mt-2 font-medium">Next: Today at 4:00 PM</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Sidebar Status -->
+                    <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col h-full">
+                        <h3 class="font-black text-base text-slate-900 mb-4 flex items-center gap-2"><i data-lucide="user-check" class="w-4 h-4 text-amber-500"></i> Account Status</h3>
+                        <div class="space-y-3 flex-1">
+                            <div class="flex items-center justify-between p-3 bg-slate-50 rounded-xl border border-slate-100 text-sm">
+                                <span class="font-medium text-slate-700">Verified</span><i data-lucide="check-circle" class="w-4 h-4 text-emerald-500"></i>
+                            </div>
+                            <div id="dash-mpesa-status" class="flex items-center justify-between p-3 bg-slate-50 rounded-xl border border-slate-100 text-sm hidden">
+                                <span class="font-medium text-slate-700">M-PESA Active</span><i id="dash-mpesa-icon" data-lucide="check-circle" class="w-4 h-4 text-emerald-500"></i>
+                            </div>
+                        </div>
+                        <div class="mt-4 pt-4 border-t border-slate-100">
+                            <button onclick="App.router.navigate('invites')" class="w-full flex items-center justify-center gap-2 bg-amber-50 text-amber-700 text-sm font-bold py-2.5 rounded-xl border border-amber-200 hover:bg-amber-100 transition">
+                                <i data-lucide="gift" class="w-4 h-4"></i> Earn $5 Bonus
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= WALLET VIEW ================= -->
+        <section id="view-wallet" class="view-section hidden-view w-full">
+            <div class="max-w-4xl mx-auto px-4 py-8">
+                <h1 class="text-2xl font-black text-slate-900 mb-6">Financial Hub</h1>
+
+                <div class="grid md:grid-cols-2 gap-6">
+                    <!-- Balance -->
+                    <div class="bg-slate-900 rounded-2xl p-6 text-white relative shadow-sm h-fit">
+                        <p class="text-slate-400 font-bold uppercase tracking-wider text-[10px] mb-2">Available Balance</p>
+                        <h2 class="text-5xl font-black mb-6" id="wallet-balance-main">$0.00</h2>
+                        <div class="bg-slate-800/80 rounded-xl p-4 border border-slate-700">
+                            <p class="text-slate-400 text-[10px] font-bold uppercase tracking-wider mb-1">Local Equivalent</p>
+                            <h3 class="text-xl font-black text-emerald-400" id="wallet-balance-kes">KES 0.00</h3>
+                            <div class="flex justify-between items-center mt-2 text-[10px] text-slate-500">
+                                <span>Rate: 1 USD = 132.50 KES</span>
+                                <span id="wallet-fee-text" class="text-amber-400 font-bold"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Action Form (Dynamic) -->
+                    <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm" id="wallet-action-container">
+                        <!-- Populated by JS -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= CONNECT (CHAT) VIEW ================= -->
+        <section id="view-connect" class="view-section hidden-view w-full h-[calc(100vh-64px)] overflow-hidden bg-white flex">
+            <!-- Sidebar Directory -->
+            <div id="chat-sidebar" class="w-full md:w-[320px] flex flex-col border-r border-slate-200 bg-slate-50 h-full shrink-0">
+                <div class="p-4 bg-white border-b border-slate-200 shadow-sm z-10 shrink-0">
+                    <h2 class="text-lg font-black text-slate-900 mb-3">Directory</h2>
+                    <div class="relative mb-3">
+                        <i data-lucide="search" class="w-4 h-4 absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400"></i>
+                        <input type="text" id="chat-search" placeholder="Search..." class="w-full pl-9 pr-3 py-2 bg-slate-100 border border-transparent focus:border-amber-500 rounded-lg outline-none text-sm transition" onkeyup="App.features.filterContacts()" />
+                    </div>
+                    <div class="flex items-center gap-2 overflow-x-auto hide-scrollbar pb-1" id="chat-filters"></div>
+                </div>
+                <div class="flex-1 overflow-y-auto custom-scrollbar bg-white" id="chat-contacts">
+                    <!-- Contacts via JS -->
+                </div>
+            </div>
+
+            <!-- Main Chat Area -->
+            <div id="chat-main" class="flex-1 hidden md:flex flex-col bg-slate-50 relative h-full">
+                <!-- Blank State -->
+                <div id="chat-placeholder" class="flex-1 flex flex-col items-center justify-center text-center p-6">
+                    <div class="w-20 h-20 bg-white shadow-sm rounded-full flex items-center justify-center mb-4 border border-slate-100"><i data-lucide="message-square" class="w-8 h-8 text-amber-500"></i></div>
+                    <h2 class="text-xl font-black text-slate-900 mb-2">Select a Connection</h2>
+                    <p class="text-slate-500 text-sm max-w-xs">Browse the directory to find a tutor or learner. Book a lesson to chat.</p>
+                </div>
+
+                <!-- Active Chat -->
+                <div id="chat-active" class="hidden flex-col h-full w-full">
+                    <div class="h-16 px-4 bg-white border-b border-slate-200 flex items-center justify-between shrink-0 shadow-sm z-10">
+                        <div class="flex items-center gap-3">
+                            <button class="md:hidden p-1.5 text-slate-500 bg-slate-100 rounded-md" onclick="App.ui.closeChat()"><i data-lucide="chevron-left" class="w-5 h-5"></i></button>
+                            <div class="relative">
+                                <img id="active-chat-avatar" src="" class="w-10 h-10 rounded-full object-cover border border-slate-200" />
+                                <div id="active-chat-status" class="absolute bottom-0 right-0 w-2.5 h-2.5 border-2 border-white rounded-full"></div>
+                            </div>
+                            <div>
+                                <h3 id="active-chat-name" class="font-bold text-slate-900 text-sm leading-none">Name</h3>
+                                <p id="active-chat-sub" class="text-[10px] text-emerald-600 font-bold uppercase tracking-wider mt-1">Online</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-1">
+                            <button onclick="App.features.initiateCall('audio')" class="p-2 text-slate-600 hover:bg-slate-100 rounded-lg transition"><i data-lucide="phone" class="w-4 h-4"></i></button>
+                            <button onclick="App.features.initiateCall('video')" class="p-2 text-slate-600 hover:bg-slate-100 rounded-lg transition"><i data-lucide="video" class="w-4 h-4"></i></button>
+                        </div>
+                    </div>
+
+                    <!-- Booking Gate Overlay -->
+                    <div id="chat-booking-gate" class="absolute top-16 left-0 right-0 bottom-0 bg-white/95 backdrop-blur-md z-20 flex flex-col items-center justify-center p-6 text-center hidden">
+                        <div class="w-16 h-16 bg-amber-100 rounded-full flex items-center justify-center mb-4"><i data-lucide="lock" class="w-6 h-6 text-amber-600"></i></div>
+                        <h3 class="text-xl font-black text-slate-900 mb-2">Booking Required</h3>
+                        <p class="text-slate-600 text-sm mb-6 max-w-xs">To unlock real-time chat with this tutor, you must book a session.</p>
+                        
+                        <div class="bg-slate-50 border border-slate-200 rounded-xl p-4 w-full max-w-xs mb-6 text-left">
+                            <div class="flex justify-between items-center mb-2"><span class="font-bold text-slate-700 text-xs">Tutor Rate:</span><span id="booking-rate" class="font-black text-base text-slate-900">$0.00/hr</span></div>
+                            <div class="flex justify-between items-center pt-2 border-t border-slate-200"><span class="font-medium text-slate-500 text-xs">Wallet Bal:</span><span id="booking-wallet-bal" class="font-bold text-emerald-600 text-xs">$0.00</span></div>
+                        </div>
+
+                        <button id="btn-book-lesson" onclick="App.features.processBooking()" class="w-full max-w-xs py-3 bg-slate-900 text-white rounded-xl font-bold text-sm hover:bg-slate-800 transition flex justify-center items-center gap-2">
+                            Book Lesson Now <i data-lucide="check" class="w-4 h-4"></i>
+                        </button>
+                    </div>
+
+                    <div id="chat-messages" class="flex-1 overflow-y-auto p-4 space-y-4 bg-slate-50 custom-scrollbar relative z-10"></div>
+
+                    <div class="p-3 bg-white border-t border-slate-200 shrink-0 z-10">
+                        <form onsubmit="App.features.sendMessage(event)" class="flex gap-2 items-end">
+                            <textarea id="chat-input" placeholder="Type a message..." class="flex-1 px-4 py-3 bg-slate-100 border border-transparent focus:border-amber-500 rounded-xl outline-none transition resize-none custom-scrollbar text-sm" rows="1"></textarea>
+                            <button type="submit" class="w-11 h-11 bg-slate-900 rounded-xl flex items-center justify-center text-white shrink-0 hover:bg-amber-500 transition shadow-sm">
+                                <i data-lucide="send" class="w-5 h-5 ml-0.5"></i>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= INVITES VIEW ================= -->
+        <section id="view-invites" class="view-section hidden-view w-full">
+            <div class="max-w-2xl mx-auto px-4 py-12 text-center">
+                <h1 class="text-3xl font-black text-slate-900 mb-3">Refer & Earn</h1>
+                <p class="text-sm text-slate-600 mb-8">Earn $5 directly into your wallet for every active user who joins.</p>
+                
+                <div class="bg-white rounded-2xl p-8 border border-slate-200 shadow-sm relative overflow-hidden">
+                    <div class="w-16 h-16 bg-amber-100 text-amber-600 rounded-full flex items-center justify-center mx-auto mb-6"><i data-lucide="gift" class="w-8 h-8"></i></div>
+                    <div class="flex flex-col sm:flex-row items-center gap-3">
+                        <div id="invite-link-display" class="flex-1 bg-slate-50 border border-slate-200 p-3 rounded-lg font-mono text-sm text-slate-700 truncate w-full text-left">https://afrilingo.africa/invite/...</div>
+                        <button onclick="App.features.copyInvite()" class="w-full sm:w-auto p-3 bg-slate-900 text-white rounded-lg hover:bg-slate-800 transition font-bold text-sm flex justify-center items-center gap-2">Copy <i data-lucide="copy" class="w-4 h-4"></i></button>
+                    </div>
+                    <p class="text-xs text-slate-400 mt-6">(Clicking copy simulates a successful $5 referral after 5 seconds)</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= SUPPORT VIEW ================= -->
+        <section id="view-support" class="view-section hidden-view w-full">
+            <div class="max-w-xl mx-auto px-4 py-12">
+                <h1 class="text-3xl font-black text-slate-900 mb-8 text-center">Contact Support</h1>
+                <form onsubmit="App.features.submitSupport(event)" class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 space-y-4">
+                    <div class="grid sm:grid-cols-2 gap-4">
+                        <div><label class="block text-xs font-bold text-slate-700 mb-1">Name</label><input required class="w-full p-3 bg-slate-50 border border-slate-200 rounded-lg text-sm outline-none" /></div>
+                        <div><label class="block text-xs font-bold text-slate-700 mb-1">Email</label><input required type="email" class="w-full p-3 bg-slate-50 border border-slate-200 rounded-lg text-sm outline-none" /></div>
+                    </div>
+                    <div><label class="block text-xs font-bold text-slate-700 mb-1">Subject</label><input required class="w-full p-3 bg-slate-50 border border-slate-200 rounded-lg text-sm outline-none" /></div>
+                    <div><label class="block text-xs font-bold text-slate-700 mb-1">Message</label><textarea required rows="4" class="w-full p-3 bg-slate-50 border border-slate-200 rounded-lg text-sm outline-none resize-none"></textarea></div>
+                    <button type="submit" id="support-btn" class="w-full py-3 bg-amber-500 text-slate-900 font-bold text-sm rounded-lg hover:bg-amber-400 transition">Send Message</button>
+                </form>
+            </div>
+        </section>
+
+        <!-- ================= ACTIVATION VIEW (TUTORS ONLY) ================= -->
+        <section id="view-activate" class="view-section hidden-view w-full bg-slate-950 flex-1 flex items-center justify-center py-8 px-4">
+            <div class="max-w-md w-full">
+                <div class="bg-white rounded-2xl shadow-2xl overflow-hidden">
+                    <div class="bg-slate-900 p-8 text-center text-white relative">
+                        <div class="w-14 h-14 bg-amber-500/20 rounded-full flex items-center justify-center mx-auto mb-4"><i data-lucide="shield-alert" class="w-7 h-7 text-amber-400"></i></div>
+                        <h1 class="text-2xl font-black mb-1">Activation Required</h1>
+                        <p class="text-slate-300 text-xs">Verify identity to unlock dashboard.</p>
+                    </div>
+                    <div class="p-6 space-y-6">
+                        <div class="bg-amber-50 border border-amber-200 rounded-xl p-4 flex items-start gap-3">
+                            <i data-lucide="info" class="w-5 h-5 text-amber-600 shrink-0 mt-0.5"></i>
+                            <p class="text-amber-900 text-xs font-medium">Platform integrity requires a strict one-time activation fee of <strong>100 KES</strong> via M-PESA.</p>
+                        </div>
+                        <div class="bg-slate-50 rounded-xl p-5 border border-slate-200">
+                            <h3 class="font-black text-slate-900 mb-3 text-sm flex items-center"><i data-lucide="smartphone" class="w-4 h-4 mr-2 text-emerald-600"></i> Paybill Instructions</h3>
+                            <ul class="space-y-2 text-slate-700 text-xs font-medium">
+                                <li class="flex items-center justify-between"><span>1. Go to M-PESA > Paybill</span></li>
+                                <li class="flex items-center justify-between"><span>2. Business No:</span><strong class="font-mono text-sm">542542</strong></li>
+                                <li class="flex items-center justify-between"><span>3. Account No:</span><strong class="font-mono text-sm">AFRILINGO</strong></li>
+                                <li class="flex items-center justify-between"><span>4. Amount:</span><strong class="font-mono text-sm">100</strong></li>
+                            </ul>
+                        </div>
+                        <button onclick="App.features.processPaymentClick(event, 'activate')" class="w-full py-3.5 bg-emerald-500 text-white rounded-xl font-bold text-sm shadow-md hover:bg-emerald-600 transition flex justify-center items-center gap-2">
+                            I have made the payment <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- AUTHENTICATION MODAL -->
+    <div id="auth-modal" class="hidden-view fixed inset-0 z-[99999] flex items-center justify-center p-4 bg-slate-900/80 backdrop-blur-sm fade-in">
+        <div class="bg-white rounded-2xl shadow-2xl w-full max-w-sm overflow-hidden relative zoom-in border border-slate-100">
+            <button onclick="App.ui.closeAuthModal()" class="absolute top-4 right-4 p-1.5 text-slate-400 hover:text-slate-800 bg-slate-100 rounded-md transition"><i data-lucide="x" class="w-4 h-4"></i></button>
+            <div class="p-6">
+                <div class="text-center mb-6">
+                    <div class="w-12 h-12 bg-amber-100 rounded-xl flex items-center justify-center mx-auto mb-3"><i data-lucide="globe" class="h-6 w-6 text-amber-600"></i></div>
+                    <h2 class="text-xl font-black text-slate-900" id="auth-title">Join AfriLingo</h2>
+                    <p class="text-slate-500 text-xs mt-1" id="auth-subtitle">Connect cultures</p>
+                </div>
+                <form id="auth-form" onsubmit="App.auth.handleSubmit(event)" class="space-y-4">
+                    <div id="auth-register-fields">
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 mb-1">Full Name</label>
+                            <input type="text" id="auth-name" class="w-full px-3 py-2.5 bg-slate-50 border border-slate-200 rounded-lg text-sm outline-none" placeholder="John Doe" />
+                        </div>
+                        <div class="mt-4">
+                            <label class="block text-xs font-bold text-slate-700 mb-1">I want to...</label>
+                            <div class="grid grid-cols-2 gap-2">
+                                <button type="button" onclick="App.ui.setAuthRole('Learner')" id="btn-role-learner" class="py-2.5 px-3 rounded-lg border text-xs font-bold flex items-center justify-center gap-1.5 bg-amber-50 border-amber-500 text-amber-700 transition">Learner</button>
+                                <button type="button" onclick="App.ui.setAuthRole('Tutor')" id="btn-role-tutor" class="py-2.5 px-3 rounded-lg border border-slate-200 text-xs font-bold flex items-center justify-center gap-1.5 bg-white text-slate-600 transition">Tutor</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-4">
+                        <label class="block text-xs font-bold text-slate-700 mb-1">Email</label>
+                        <input required type="email" id="auth-email" class="w-full px-3 py-2.5 bg-slate-50 border border-slate-200 rounded-lg text-sm outline-none" placeholder="you@example.com" />
+                    </div>
+                    <div id="auth-password-group" class="mt-4">
+                        <div class="flex justify-between items-center mb-1">
+                            <label class="block text-xs font-bold text-slate-700">Password</label>
+                            <button type="button" id="btn-forgot" onclick="App.ui.openAuthModal('forgot')" class="text-[10px] text-amber-600 font-bold">Forgot?</button>
+                        </div>
+                        <input type="password" id="auth-password" class="w-full px-3 py-2.5 bg-slate-50 border border-slate-200 rounded-lg text-sm outline-none" placeholder="••••••••" />
+                    </div>
+                    <button type="submit" id="auth-submit-btn" class="w-full py-3 bg-slate-900 text-white rounded-lg font-bold text-sm hover:bg-slate-800 transition mt-6">Create Account</button>
+                </form>
+                <div class="mt-6 text-center text-xs text-slate-600" id="auth-toggle-text"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- CALL MODAL -->
+    <div id="call-modal" class="hidden-view fixed inset-0 z-[99999] flex items-center justify-center bg-slate-950/95 backdrop-blur-sm fade-in p-4">
+        <div id="call-container" class="relative w-full max-w-sm h-[60vh] bg-slate-900 rounded-3xl overflow-hidden shadow-2xl flex flex-col py-10 border border-slate-800">
+            <div class="flex-1 flex flex-col items-center justify-center z-10">
+                <div class="text-center">
+                    <div class="relative inline-block mb-6">
+                        <img id="call-avatar" src="" class="w-24 h-24 rounded-full border-[4px] border-slate-800 object-cover" />
+                        <div id="call-ring-anim" class="absolute inset-0 rounded-full border-[4px] border-amber-500 animate-ping opacity-75"></div>
+                    </div>
+                    <h2 id="call-name" class="text-2xl font-bold text-white mb-1">Name</h2>
+                    <p id="call-status" class="text-amber-400 font-bold text-sm uppercase tracking-wider">Ringing...</p>
+                </div>
+            </div>
+            <div class="absolute bottom-8 w-full flex justify-center gap-6 z-20" id="call-controls"></div>
+        </div>
+    </div>
+
+    <!-- APPLICATION LOGIC & FIREBASE INTEGRATION -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged, updateProfile, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
+        import { getFirestore, doc, setDoc, getDoc, collection, addDoc, onSnapshot, query, orderBy, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+
+        // APP CORE
+        window.App = {
+            config: {
+                EXCHANGE_RATE: 132.50,
+                ACTIVATION_FEE_KES: 100,
+                firebaseConfig: {
+                    apiKey: "AIzaSyA0VPYkpzifoSzBJLh-cDRLJWK4ziZcsWo",
+                    authDomain: "afrilingo-4c48b.firebaseapp.com",
+                    projectId: "afrilingo-4c48b",
+                    storageBucket: "afrilingo-4c48b.firebasestorage.app",
+                    messagingSenderId: "793104988144",
+                    appId: "1:793104988144:web:cd03b6ca9049b56f634f35"
+                }
+            },
+            state: {
+                user: null,
+                walletBalanceUSD: 0,
+                isActivated: false,
+                currentView: 'home',
+                authMode: 'register',
+                authRole: 'Learner',
+                usersList: [],
+                chat: { selectedContact: null, isBooked: false, unsubscribe: null },
+                payment: { attempts: 0 },
+                call: { interval: null, duration: 0 }
+            },
+            firebase: { app: null, auth: null, db: null },
+            
+            // DATA GENERATION (Directory matches user requirement of 65+ simulated users)
+            data: {
+                generateUsers: () => {
+                    const kenyan = ["Swahili", "Kikuyu", "Luo", "Kalenjin", "Kamba"];
+                    const other = ["Yoruba", "Igbo", "Zulu", "Amharic", "Hausa"];
+                    const langs = [...kenyan, ...other];
+                    const namesAf = ["Mwangi", "Akinyi", "Kiprono", "Mutua", "Wanjiku", "Ochieng", "Kwame", "Aisha", "Chidi", "Fatou"];
+                    const namesInt = ["Emma", "Liam", "Olivia", "Noah", "Oliver", "Sophia", "William", "Mia", "James"];
+                    
+                    const users = [];
+                    for(let i=1; i<=65; i++){
+                        const isTutor = i <= 45;
+                        const lang = isTutor ? langs[i % langs.length] : langs[Math.floor(Math.random() * langs.length)];
+                        users.push({
+                            id: `mock_${i}`,
+                            name: `${isTutor ? namesAf[i % namesAf.length] : namesInt[i % namesInt.length]} ${String.fromCharCode(65 + (i%26))}.`,
+                            role: isTutor ? 'Tutor' : 'Learner',
+                            language: lang,
+                            country: isTutor ? (kenyan.includes(lang) ? 'Kenya' : 'Africa') : 'International',
+                            rateUSD: isTutor ? Math.floor(Math.random()*15)+5 : 0,
+                            status: ['online','offline','away'][Math.floor(Math.random()*3)],
+                            avatar: `https://i.pravatar.cc/150?u=afri${i}`,
+                            rating: isTutor ? (Math.random()*1.5 + 3.5).toFixed(1) : null,
+                            reviews: isTutor ? Math.floor(Math.random()*150)+5 : 0,
+                            bio: isTutor ? `Native ${lang} speaker. Conversational focus.` : `Learning ${lang}!`
+                        });
+                    }
+                    return users.sort((a,b) => (a.status==='online'?-1:1));
+                }
+            },
+
+            // UI CONTROLLERS
+            ui: {
+                notify: (title, message, type='info') => {
+                    const cont = document.getElementById('toast-container');
+                    const t = document.createElement('div');
+                    const colors = type==='error'?'bg-red-50 border-red-200 text-red-900':type==='success'?'bg-emerald-50 border-emerald-200 text-emerald-900':'bg-white border-slate-200 text-slate-900';
+                    const icon = type==='error'?'alert-circle':type==='success'?'check-circle':'bell';
+                    const iconCol = type==='error'?'text-red-500':type==='success'?'text-emerald-500':'text-amber-500';
+                    t.className = `p-3 rounded-xl shadow-lg border flex items-start gap-3 w-72 slide-in-right ${colors}`;
+                    t.innerHTML = `<i data-lucide="${icon}" class="w-5 h-5 shrink-0 ${iconCol} mt-0.5"></i><div><h4 class="font-bold text-sm">${title}</h4><p class="text-xs font-medium opacity-90 mt-0.5 leading-tight">${message}</p></div>`;
+                    cont.appendChild(t);
+                    lucide.createIcons();
+                    setTimeout(() => { t.style.opacity='0'; setTimeout(()=>t.remove(),300); }, 4000);
+                },
+                toggleMobileMenu: () => {
+                    const m = document.getElementById('mobile-menu');
+                    const i = document.getElementById('mobile-menu-icon');
+                    if(m.classList.contains('hidden')) { m.classList.remove('hidden'); i.setAttribute('data-lucide', 'x'); }
+                    else { m.classList.add('hidden'); i.setAttribute('data-lucide', 'menu'); }
+                    lucide.createIcons();
+                },
+                openAuthModal: (mode, roleOverride = null) => {
+                    App.state.authMode = mode;
+                    if(roleOverride) App.ui.setAuthRole(roleOverride);
+                    document.getElementById('auth-modal').classList.remove('hidden-view');
+                    document.getElementById('auth-title').innerText = mode === 'login' ? 'Welcome Back' : mode === 'register' ? 'Join AfriLingo' : 'Reset Password';
+                    document.getElementById('auth-subtitle').innerText = mode === 'login' ? 'Access your account' : mode === 'register' ? 'Connect cultures' : 'Get a reset link';
+                    document.getElementById('auth-submit-btn').innerText = mode === 'login' ? 'Log In' : mode === 'register' ? 'Create Account' : 'Send Link';
+                    document.getElementById('auth-register-fields').classList.toggle('hidden', mode !== 'register');
+                    document.getElementById('auth-password-group').classList.toggle('hidden', mode === 'forgot');
+                    document.getElementById('btn-forgot').classList.toggle('hidden', mode !== 'login');
+                    
+                    const text = mode === 'login' ? `Don't have an account? <button type="button" onclick="App.ui.openAuthModal('register')" class="text-amber-600 font-bold hover:underline">Sign up</button>` : `Already have an account? <button type="button" onclick="App.ui.openAuthModal('login')" class="text-amber-600 font-bold hover:underline">Log in</button>`;
+                    document.getElementById('auth-toggle-text').innerHTML = mode !== 'forgot' ? text : `<button type="button" onclick="App.ui.openAuthModal('login')" class="text-amber-600 font-bold hover:underline">Back to login</button>`;
+                    lucide.createIcons();
+                },
+                closeAuthModal: () => document.getElementById('auth-modal').classList.add('hidden-view'),
+                setAuthRole: (role) => {
+                    App.state.authRole = role;
+                    const lBtn = document.getElementById('btn-role-learner');
+                    const tBtn = document.getElementById('btn-role-tutor');
+                    if(role === 'Learner') {
+                        lBtn.className = "py-2.5 px-3 rounded-lg border text-xs font-bold flex items-center justify-center gap-1.5 bg-amber-50 border-amber-500 text-amber-700 transition";
+                        tBtn.className = "py-2.5 px-3 rounded-lg border border-slate-200 text-xs font-bold flex items-center justify-center gap-1.5 bg-white text-slate-600 transition";
+                    } else {
+                        tBtn.className = "py-2.5 px-3 rounded-lg border text-xs font-bold flex items-center justify-center gap-1.5 bg-amber-50 border-amber-500 text-amber-700 transition";
+                        lBtn.className = "py-2.5 px-3 rounded-lg border border-slate-200 text-xs font-bold flex items-center justify-center gap-1.5 bg-white text-slate-600 transition";
+                    }
+                },
+                closeChat: () => {
+                    document.getElementById('chat-sidebar').classList.remove('hidden');
+                    document.getElementById('chat-main').classList.add('hidden');
+                    document.getElementById('chat-main').classList.remove('flex');
+                    App.state.chat.selectedContact = null;
+                },
+                renderNavbar: () => {
+                    const dNav = document.getElementById('desktop-nav');
+                    const mNav = document.getElementById('mobile-nav-items');
+                    const authC = document.getElementById('nav-auth-container');
+                    const pub = [{id:'home', label:'Home'}, {id:'how', label:'How It Works'}, {id:'support', label:'Support'}];
+                    const priv = [{id:'dashboard', label:'Dashboard'}, {id:'connect', label:'Connect'}, {id:'wallet', label:'Wallet'}];
+                    const items = App.state.user ? priv : pub;
+
+                    dNav.innerHTML = items.map(i => `<button onclick="App.router.navigate('${i.id}')" class="text-sm font-bold transition ${App.state.currentView===i.id ? 'text-amber-600' : 'text-slate-500 hover:text-slate-900'}">${i.label}</button>`).join('');
+
+                    if(!App.state.user) {
+                        authC.innerHTML = `<button onclick="App.ui.openAuthModal('login')" class="text-sm font-bold text-slate-600 hover:text-amber-600 transition">Log In</button><button onclick="App.ui.openAuthModal('register')" class="bg-slate-900 text-white px-5 py-2 rounded-lg text-sm font-bold hover:bg-slate-800 transition shadow-sm">Sign Up</button>`;
+                        mNav.innerHTML = items.map(i => `<button onclick="App.router.navigate('${i.id}')" class="block w-full text-left px-3 py-2.5 rounded-lg text-sm font-bold ${App.state.currentView===i.id?'bg-amber-50 text-amber-600':'text-slate-700'}">${i.label}</button>`).join('') + `<div class="grid grid-cols-2 gap-2 mt-2 pt-2 border-t border-slate-100"><button onclick="App.ui.openAuthModal('login')" class="w-full py-2.5 border rounded-lg text-sm font-bold">Log In</button><button onclick="App.ui.openAuthModal('register')" class="w-full py-2.5 bg-slate-900 text-white rounded-lg text-sm font-bold">Sign Up</button></div>`;
+                    } else {
+                        let act = (App.state.user.role === 'Tutor' && !App.state.isActivated) ? `<button onclick="App.router.navigate('activate')" class="text-[10px] font-bold text-red-600 bg-red-50 px-2 py-1 rounded border border-red-200 animate-pulse mr-3">Activate</button>` : '';
+                        authC.innerHTML = `<div class="flex items-center pl-4 border-l border-slate-200">${act}<img src="${App.state.user.avatar}" class="w-8 h-8 rounded-full border border-amber-500 mr-2"/><div class="mr-4"><div class="text-sm font-bold leading-none">${App.state.user.name.split(' ')[0]}</div><div class="text-[10px] text-slate-500 uppercase">${App.state.user.role}</div></div><button onclick="App.auth.handleLogout()" class="text-slate-400 hover:text-red-500"><i data-lucide="log-out" class="w-4 h-4"></i></button></div>`;
+                        mNav.innerHTML = items.map(i => `<button onclick="App.router.navigate('${i.id}')" class="block w-full text-left px-3 py-2.5 rounded-lg text-sm font-bold ${App.state.currentView===i.id?'bg-amber-50 text-amber-600':'text-slate-700'}">${i.label}</button>`).join('') + `<button onclick="App.auth.handleLogout()" class="w-full text-left px-3 py-2.5 mt-2 rounded-lg text-sm font-bold text-red-600 bg-red-50 border border-red-100">Log Out</button>`;
+                    }
+                    lucide.createIcons();
+                }
+            },
+
+            // ROUTER
+            router: {
+                navigate: (view) => {
+                    if(App.state.user && App.state.user.role === 'Tutor' && !App.state.isActivated && ['connect', 'wallet', 'dashboard', 'invites'].includes(view)) view = 'activate';
+                    
+                    document.querySelectorAll('.view-section').forEach(el => el.classList.add('hidden-view'));
+                    document.getElementById(`view-${view}`).classList.remove('hidden-view');
+                    App.state.currentView = view;
+                    window.scrollTo(0, 0);
+                    
+                    const m = document.getElementById('mobile-menu');
+                    if(!m.classList.contains('hidden')) App.ui.toggleMobileMenu();
+                    
+                    App.ui.renderNavbar();
+                    if(view === 'dashboard') App.features.renderDashboard();
+                    if(view === 'wallet') App.features.renderWallet();
+                    if(view === 'connect') { App.features.renderChatFilters(); App.features.filterContacts(); }
+                }
+            },
+
+            // FEATURES & ALGORITHMS
+            features: {
+                calcKesConversion: () => {
+                    const val = parseFloat(document.getElementById('wallet-amount').value);
+                    const prev = document.getElementById('wallet-kes-preview');
+                    if(!isNaN(val) && val > 0) prev.innerText = `KES ${(val * App.config.EXCHANGE_RATE).toFixed(2)}`;
+                    else prev.innerText = `KES 0.00`;
+                },
+                setMaxWithdraw: () => {
+                    document.getElementById('wallet-amount').value = App.state.walletBalanceUSD;
+                    App.features.calcKesConversion();
+                },
+                processPaymentClick: (e, flow) => {
+                    e.preventDefault();
+                    App.state.payment.attempts++;
+                    const btn = e.target.closest('button');
+                    const ogText = btn.innerHTML;
+                    
+                    if(App.state.payment.attempts <= 2) {
+                        App.ui.notify('M-PESA Error', `Verification Failed (Attempt ${App.state.payment.attempts}/2). Payment not detected in system.`, 'error');
+                        return;
+                    }
+                    
+                    btn.innerHTML = `<i data-lucide="loader" class="animate-spin w-4 h-4 mr-2"></i> Pending...`;
+                    btn.disabled = true;
+                    lucide.createIcons();
+                    
+                    setTimeout(() => {
+                        if(flow === 'activate') {
+                            App.state.isActivated = true;
+                            App.ui.notify('Success', 'Tutor Profile Activated!', 'success');
+                            App.router.navigate('dashboard');
+                        } else if(flow === 'deposit') {
+                            const amt = parseFloat(document.getElementById('wallet-amount').value);
+                            App.state.walletBalanceUSD += amt;
+                            App.ui.notify('Deposit Verified', `$${amt.toFixed(2)} added to wallet.`, 'success');
+                            App.features.renderWallet();
+                        }
+                        btn.innerHTML = ogText;
+                        btn.disabled = false;
+                        App.state.payment.attempts = 0;
+                    }, 3000);
+                },
+                processWalletAction: (e, type) => {
+                    e.preventDefault();
+                    if(type === 'withdraw') {
+                        const val = parseFloat(document.getElementById('wallet-amount').value);
+                        if(isNaN(val) || val <= 0) return App.ui.notify('Error', 'Enter valid amount', 'error');
+                        if(val > App.state.walletBalanceUSD) return App.ui.notify('Error', 'Insufficient balance.', 'error');
+                        const btn = document.getElementById('btn-wallet-action');
+                        const og = btn.innerHTML;
+                        btn.innerHTML = `<i data-lucide="loader" class="animate-spin w-4 h-4 mr-2"></i> Processing...`;
+                        lucide.createIcons();
+                        setTimeout(() => {
+                            App.state.walletBalanceUSD -= val;
+                            App.ui.notify('Withdrawal Complete', `Sent to M-PESA instantly.`, 'success');
+                            btn.innerHTML = og;
+                            App.features.renderWallet();
+                        }, 2000);
+                    }
+                },
+                renderDashboard: () => {
+                    document.getElementById('dash-welcome').innerText = `Welcome back, ${App.state.user.name.split(' ')[0]}!`;
+                    document.getElementById('dash-info').innerHTML = `Role: <strong class="text-amber-600 uppercase text-xs">${App.state.user.role}</strong>`;
+                    document.getElementById('dash-balance').innerText = `$${App.state.walletBalanceUSD.toFixed(2)}`;
+                    
+                    if(App.state.user.role === 'Tutor') {
+                        document.getElementById('dash-kes-balance').innerText = `≈ KES ${(App.state.walletBalanceUSD * App.config.EXCHANGE_RATE).toFixed(2)}`;
+                        const i = document.getElementById('dash-mpesa-icon');
+                        if(App.state.isActivated) { i.setAttribute('data-lucide', 'check-circle'); i.className="w-4 h-4 text-emerald-500"; }
+                        else { i.setAttribute('data-lucide', 'alert-circle'); i.className="w-4 h-4 text-amber-500"; }
+                        document.getElementById('dash-mpesa-status').classList.remove('hidden');
+                    } else {
+                        document.getElementById('dash-kes-balance').innerText = '';
+                        document.getElementById('dash-mpesa-status').classList.add('hidden');
+                    }
+                    lucide.createIcons();
+                },
+                renderWallet: () => {
+                    const isT = App.state.user.role === 'Tutor';
+                    document.getElementById('wallet-balance-main').innerText = `$${App.state.walletBalanceUSD.toFixed(2)}`;
+                    document.getElementById('wallet-balance-kes').innerText = `KES ${(App.state.walletBalanceUSD * App.config.EXCHANGE_RATE).toFixed(2)}`;
+                    document.getElementById('wallet-fee-text').innerText = isT ? 'Fee: 10%/lesson' : '';
+                    const c = document.getElementById('wallet-action-container');
+                    
+                    if(isT) {
+                        c.innerHTML = `
+                            <h3 class="text-lg font-black text-slate-900 mb-4 flex items-center"><i data-lucide="download" class="w-4 h-4 mr-2 text-slate-500"></i> Withdraw to M-PESA</h3>
+                            <form onsubmit="App.features.processWalletAction(event, 'withdraw')" class="space-y-4">
+                                <div>
+                                    <div class="flex justify-between mb-1"><label class="block text-xs font-bold text-slate-700">Amount (USD)</label><button type="button" onclick="App.features.setMaxWithdraw()" class="text-[10px] font-bold bg-slate-100 px-2 py-0.5 rounded text-slate-600">MAX</button></div>
+                                    <div class="relative"><div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400 font-bold">$</div><input type="number" step="0.01" id="wallet-amount" required class="w-full pl-7 pr-3 py-2.5 bg-slate-50 border border-slate-200 rounded-lg focus:border-amber-500 outline-none text-lg font-black" oninput="App.features.calcKesConversion()" /></div>
+                                    <p class="text-xs font-bold text-emerald-600 mt-1" id="wallet-kes-preview">You receive: KES 0.00</p>
+                                </div>
+                                <div><label class="block text-xs font-bold text-slate-700 mb-1">M-PESA Number</label><input type="tel" required placeholder="2547..." class="w-full px-3 py-2.5 bg-slate-50 border border-slate-200 rounded-lg outline-none text-sm" /></div>
+                                <button type="submit" id="btn-wallet-action" class="w-full py-3 bg-amber-500 text-slate-900 rounded-lg font-bold text-sm hover:bg-amber-400 transition flex justify-center items-center">Confirm Withdrawal</button>
+                            </form>`;
+                    } else {
+                        c.innerHTML = `
+                            <h3 class="text-lg font-black text-slate-900 mb-4 flex items-center"><i data-lucide="upload" class="w-4 h-4 mr-2 text-slate-500"></i> Deposit via Paybill 542542</h3>
+                            <form onsubmit="App.features.processPaymentClick(event, 'deposit')" class="space-y-4">
+                                <div>
+                                    <label class="block text-xs font-bold text-slate-700 mb-1">Amount (USD)</label>
+                                    <div class="relative"><div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400 font-bold">$</div><input type="number" step="0.01" id="wallet-amount" required class="w-full pl-7 pr-3 py-2.5 bg-slate-50 border border-slate-200 rounded-lg focus:border-amber-500 outline-none text-lg font-black" oninput="App.features.calcKesConversion()" /></div>
+                                    <p class="text-xs font-bold text-slate-500 mt-1" id="wallet-kes-preview">Pay exact: KES 0.00</p>
+                                </div>
+                                <button type="submit" id="btn-wallet-action" class="w-full py-3 bg-slate-900 text-white rounded-lg font-bold text-sm hover:bg-slate-800 transition flex justify-center items-center">I have made payment <i data-lucide="check" class="w-4 h-4 ml-1"></i></button>
+                            </form>`;
+                    }
+                    lucide.createIcons();
+                },
+                renderChatFilters: () => {
+                    const u = ['All', ...new Set(App.state.usersList.map(x=>x.language))];
+                    document.getElementById('chat-filters').innerHTML = `<i data-lucide="filter" class="w-3 h-3 text-slate-400 shrink-0 mx-1"></i>` + 
+                        u.slice(0,5).map(l => `<button onclick="App.state.chat.filterLang='${l}';App.features.filterContacts()" class="px-3 py-1 rounded-full text-[10px] font-bold uppercase whitespace-nowrap transition ${App.state.chat.filterLang===l?'bg-slate-900 text-white':'bg-slate-200 text-slate-600'}">${l}</button>`).join('');
+                    lucide.createIcons();
+                },
+                filterContacts: () => {
+                    const q = document.getElementById('chat-search').value.toLowerCase();
+                    const f = App.state.usersList.filter(u => {
+                        if(u.id === App.state.user.id) return false;
+                        if(u.role === App.state.user.role && q === '') return false;
+                        const mQ = u.name.toLowerCase().includes(q) || u.language.toLowerCase().includes(q);
+                        const mL = !App.state.chat.filterLang || App.state.chat.filterLang === 'All' || u.language === App.state.chat.filterLang;
+                        return mQ && mL;
+                    });
+                    
+                    const c = document.getElementById('chat-contacts');
+                    if(f.length === 0) { c.innerHTML = `<div class="p-6 text-center text-xs text-slate-400 font-bold">No results found.</div>`; return; }
+                    c.innerHTML = f.map(x => `
+                        <div onclick="App.features.selectContact('${x.id}')" class="p-3 border-b border-slate-100 cursor-pointer flex items-start gap-3 hover:bg-slate-100 ${App.state.chat.selectedContact?.id===x.id?'bg-amber-50 border-l-2 border-l-amber-500':'border-l-2 border-l-transparent'}">
+                            <div class="relative shrink-0"><img src="${x.avatar}" class="w-10 h-10 rounded-full object-cover"><div class="absolute bottom-0 right-0 w-2.5 h-2.5 border-2 border-white rounded-full ${x.status==='online'?'bg-emerald-500':x.status==='away'?'bg-amber-400':'bg-slate-300'}"></div></div>
+                            <div class="flex-1 min-w-0">
+                                <div class="flex justify-between items-start mb-0.5"><h3 class="font-bold text-slate-900 text-sm truncate">${x.name}</h3>${x.role==='Tutor'?`<span class="text-[10px] font-black text-amber-700 bg-amber-100 px-1.5 py-0.5 rounded shrink-0">$${x.rateUSD}/hr</span>`:''}</div>
+                                <div class="flex items-center text-[10px] text-slate-500"><span class="uppercase font-bold mr-1 ${x.role==='Tutor'?'text-blue-600':'text-purple-600'}">${x.role}</span><span class="truncate">${x.language}</span></div>
+                            </div>
+                        </div>`).join('');
+                },
+                selectContact: (id) => {
+                    const c = App.state.usersList.find(u => u.id === id);
+                    App.state.chat.selectedContact = c;
+                    App.features.filterContacts(); 
+                    document.getElementById('chat-placeholder').classList.add('hidden');
+                    const aBox = document.getElementById('chat-active');
+                    aBox.classList.remove('hidden'); aBox.classList.add('flex');
+                    if(window.innerWidth < 768) { document.getElementById('chat-sidebar').classList.add('hidden'); document.getElementById('chat-main').classList.remove('hidden'); document.getElementById('chat-main').classList.add('flex'); }
+
+                    document.getElementById('active-chat-avatar').src = c.avatar;
+                    document.getElementById('active-chat-name').innerText = c.name;
+                    document.getElementById('active-chat-status').className = `absolute bottom-0 right-0 w-2.5 h-2.5 border-2 border-white rounded-full ${c.status==='online'?'bg-emerald-500':'bg-slate-300'}`;
+                    document.getElementById('active-chat-bio').innerText = c.bio;
+
+                    const gate = document.getElementById('chat-booking-gate');
+                    if(App.state.user.role === 'Learner' && c.role === 'Tutor' && !App.state.chat.isBooked) {
+                        gate.classList.remove('hidden');
+                        document.getElementById('booking-rate').innerText = `$${c.rateUSD}.00/hr`;
+                        document.getElementById('booking-wallet-bal').innerText = `$${App.state.walletBalanceUSD.toFixed(2)}`;
+                        const btn = document.getElementById('btn-book-lesson');
+                        btn.innerHTML = `Book Lesson Now <i data-lucide="check" class="w-4 h-4 ml-1"></i>`;
+                        btn.disabled = false;
+                        lucide.createIcons();
+                    } else {
+                        gate.classList.add('hidden');
+                        App.features.loadFirebaseMessages(c.id);
+                    }
+                },
+                processBooking: () => {
+                    const c = App.state.chat.selectedContact;
+                    if(App.state.walletBalanceUSD < c.rateUSD) return App.ui.notify('Insufficient Funds', 'Deposit funds to book.', 'error');
+                    const btn = document.getElementById('btn-book-lesson');
+                    btn.innerHTML = `<i data-lucide="loader" class="animate-spin w-4 h-4 mr-2"></i> Processing...`;
+                    btn.disabled = true;
+                    lucide.createIcons();
+                    setTimeout(() => {
+                        App.state.walletBalanceUSD -= c.rateUSD;
+                        App.ui.notify('Booking Accepted!', `Chat unlocked securely.`, 'success');
+                        document.getElementById('chat-booking-gate').classList.add('hidden');
+                        App.state.chat.isBooked = true;
+                        App.features.loadFirebaseMessages(c.id, true); // force welcome msg
+                    }, 4000);
+                },
+                loadFirebaseMessages: (contactId, injectWelcome = false) => {
+                    if(App.state.chat.unsubscribe) App.state.chat.unsubscribe();
+                    if(!App.firebase.db) return; // Silent return if DB missing
+                    try {
+                        const chatId = [App.state.user.id, contactId].sort().join('_');
+                        const q = query(collection(App.firebase.db, 'chats', chatId, 'messages'), orderBy('time', 'asc'));
+                        
+                        // If just booked, inject a greeting
+                        if(injectWelcome) {
+                            addDoc(collection(App.firebase.db, 'chats', chatId, 'messages'), { text: `Hello! I have accepted your booking for $${App.state.chat.selectedContact.rateUSD}. Let's learn!`, senderId: contactId, time: serverTimestamp() });
+                        }
+
+                        App.state.chat.unsubscribe = onSnapshot(q, (snapshot) => {
+                            const cBox = document.getElementById('chat-messages');
+                            if(snapshot.empty) { cBox.innerHTML = `<div class="text-center text-xs text-slate-400 mt-4 font-bold">Say hello!</div>`; return; }
+                            cBox.innerHTML = snapshot.docs.map(doc => {
+                                const m = doc.data();
+                                const isMe = m.senderId === App.state.user.id;
+                                const t = m.time ? m.time.toDate().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'}) : '';
+                                return `<div class="flex ${isMe ? 'justify-end' : 'justify-start'}"><div class="max-w-[80%] rounded-xl px-4 py-2.5 shadow-sm ${isMe ? 'bg-slate-900 text-white rounded-br-sm' : 'bg-white border border-slate-200 text-slate-800 rounded-bl-sm'}"><p class="text-sm">${m.text}</p><span class="text-[9px] mt-1 block font-medium ${isMe?'text-slate-400':'text-slate-400'}">${t}</span></div></div>`;
+                            }).join('');
+                            cBox.scrollTop = cBox.scrollHeight;
+                        });
+                    } catch(e) { console.error("Chat Error:", e); }
+                },
+                sendMessage: async (e) => {
+                    e.preventDefault();
+                    const input = document.getElementById('chat-input');
+                    const msg = input.value.trim();
+                    if(!msg || !App.state.chat.selectedContact || !App.firebase.db) return;
+                    input.value = '';
+                    try {
+                        const chatId = [App.state.user.id, App.state.chat.selectedContact.id].sort().join('_');
+                        await addDoc(collection(App.firebase.db, 'chats', chatId, 'messages'), { text: msg, senderId: App.state.user.id, time: serverTimestamp() });
+                        // Sim Bot Reply
+                        setTimeout(async () => {
+                            await addDoc(collection(App.firebase.db, 'chats', chatId, 'messages'), { text: "That is excellent. Tell me more!", senderId: App.state.chat.selectedContact.id, time: serverTimestamp() });
+                            App.ui.notify('New Message', `From ${App.state.chat.selectedContact.name}`, 'info');
+                        }, 2500);
+                    } catch (err) { App.ui.notify('Error', 'Message failed to send', 'error'); }
+                },
+                initiateCall: (type) => {
+                    const c = App.state.chat.selectedContact;
+                    if(!c) return;
+                    document.getElementById('call-modal').classList.remove('hidden-view');
+                    document.getElementById('call-avatar').src = c.avatar;
+                    document.getElementById('call-name').innerText = c.name;
+                    document.getElementById('call-status').innerText = 'Calling...';
+                    document.getElementById('call-ring-anim').classList.remove('hidden');
+                    document.getElementById('call-controls').innerHTML = `<button class="w-12 h-12 bg-slate-800 rounded-full flex items-center justify-center text-white shadow-md"><i data-lucide="mic" class="w-5 h-5"></i></button><button onclick="App.features.endCall()" class="w-14 h-14 bg-red-500 rounded-full flex items-center justify-center text-white hover:bg-red-600 transition shadow-lg"><i data-lucide="phone-off" class="w-6 h-6"></i></button>${type === 'video' ? `<button class="w-12 h-12 bg-slate-800 rounded-full flex items-center justify-center text-white"><i data-lucide="video-off" class="w-5 h-5"></i></button>` : ''}`;
+                    lucide.createIcons();
+                    setTimeout(() => {
+                        document.getElementById('call-status').innerText = '00:00';
+                        document.getElementById('call-ring-anim').classList.add('hidden');
+                        App.ui.notify('Connected', 'P2P established.', 'success');
+                        App.state.call.duration = 0;
+                        App.state.call.interval = setInterval(() => {
+                            App.state.call.duration++;
+                            const m = Math.floor(App.state.call.duration/60).toString().padStart(2, '0');
+                            const s = (App.state.call.duration%60).toString().padStart(2, '0');
+                            document.getElementById('call-status').innerText = `${m}:${s}`;
+                        }, 1000);
+                    }, 4000);
+                },
+                endCall: () => {
+                    clearInterval(App.state.call.interval);
+                    document.getElementById('call-status').innerText = 'Ended';
+                    setTimeout(() => document.getElementById('call-modal').classList.add('hidden-view'), 1000);
+                },
+                copyInvite: () => {
+                    navigator.clipboard.writeText(document.getElementById('invite-link-display').innerText);
+                    App.ui.notify('Copied!', 'Link copied to clipboard.', 'success');
+                    setTimeout(() => {
+                        App.state.walletBalanceUSD += 5;
+                        App.ui.notify('Referral Success!', '$5.00 added.', 'success');
+                        if(App.state.currentView === 'wallet') App.features.renderWallet();
+                        if(App.state.currentView === 'dashboard') App.features.renderDashboard();
+                    }, 5000);
+                }
+            },
+
+            // AUTHENTICATION LOGIC
+            auth: {
+                init: () => {
+                    try {
+                        App.firebase.app = initializeApp(App.config.firebaseConfig);
+                        App.firebase.auth = getAuth(App.firebase.app);
+                        App.firebase.db = getFirestore(App.firebase.app);
+
+                        onAuthStateChanged(App.firebase.auth, (user) => {
+                            if (user) {
+                                App.state.user = { id: user.uid, name: user.displayName || 'User', email: user.email, role: user.email.includes('tutor') ? 'Tutor' : 'Learner', avatar: `https://i.pravatar.cc/150?u=${user.uid}`, status: 'online' };
+                                if(App.state.walletBalanceUSD === 0 && App.state.user.role === 'Learner') App.state.walletBalanceUSD = 50.00;
+                                App.state.isActivated = App.state.user.role === 'Learner';
+                                if(App.state.currentView === 'home') App.router.navigate('dashboard');
+                                else App.ui.renderNavbar();
+                            } else {
+                                App.state.user = null;
+                                if(!['home', 'how', 'support'].includes(App.state.currentView)) App.router.navigate('home');
+                                else App.ui.renderNavbar();
+                            }
+                        });
+                    } catch (e) {
+                        console.warn("Firebase Init Blocked:", e);
+                        App.ui.notify('System Notice', 'Running in local simulation mode.', 'info');
+                    }
+                },
+                handleSubmit: async (e) => {
+                    e.preventDefault();
+                    const btn = document.getElementById('auth-submit-btn');
+                    const ogText = btn.innerText;
+                    btn.innerHTML = `<i data-lucide="loader" class="animate-spin w-4 h-4 mr-2"></i> Processing...`;
+                    btn.disabled = true;
+                    lucide.createIcons();
+
+                    const email = document.getElementById('auth-email').value;
+                    const pass = document.getElementById('auth-password').value;
+                    const name = document.getElementById('auth-name').value;
+                    let fEmail = email;
+                    if(App.state.authMode === 'register' && App.state.authRole === 'Tutor' && !email.includes('tutor')) fEmail = email.replace('@', '.tutor@');
+
+                    try {
+                        if(!App.firebase.auth) throw new Error("Firebase not initialized. Simulating.");
+                        if(App.state.authMode === 'register') {
+                            const cred = await createUserWithEmailAndPassword(App.firebase.auth, fEmail, pass);
+                            await updateProfile(cred.user, { displayName: name });
+                            App.ui.notify('Success', 'Account created successfully', 'success');
+                        } else if(App.state.authMode === 'login') {
+                            await signInWithEmailAndPassword(App.firebase.auth, email, pass);
+                            App.ui.notify('Success', 'Logged in', 'success');
+                        } else {
+                            await sendPasswordResetEmail(App.firebase.auth, email);
+                            App.ui.notify('Sent', 'Reset link dispatched', 'success');
+                            App.ui.openAuthModal('login');
+                            return;
+                        }
+                        App.ui.closeAuthModal();
+                    } catch (err) {
+                        console.error(err);
+                        App.ui.notify('Firebase Authentication Failed', err.message.replace('Firebase: ', ''), 'error');
+                        
+                        // FALLBACK FOR PREVIEW ENVIRONMENTS
+                        setTimeout(() => {
+                            App.ui.notify('Fallback', 'Logging in via Simulation...', 'info');
+                            App.state.user = { id: 'sim_user_' + Date.now(), name: name || 'Test User', email: fEmail, role: App.state.authMode === 'login' && email.includes('tutor') ? 'Tutor' : App.state.authRole, avatar: `https://i.pravatar.cc/150?u=${Date.now()}`, status: 'online' };
+                            if(App.state.walletBalanceUSD === 0 && App.state.user.role === 'Learner') App.state.walletBalanceUSD = 50.00;
+                            App.state.isActivated = App.state.user.role === 'Learner';
+                            App.ui.closeAuthModal();
+                            App.router.navigate('dashboard');
+                        }, 2000);
+                    } finally {
+                        btn.innerHTML = ogText;
+                        btn.disabled = false;
+                    }
+                },
+                handleLogout: async () => {
+                    try { if(App.firebase.auth) await signOut(App.firebase.auth); } catch (err) {}
+                    App.state.user = null; App.state.isActivated = false; App.state.walletBalanceUSD = 0;
+                    App.router.navigate('home');
+                    App.ui.notify('Success', 'Logged out.', 'success');
+                }
+            },
+            init: () => {
+                lucide.createIcons();
+                App.state.usersList = App.data.generateUsers();
+                App.auth.init();
+                
+                // Ticker
+                const arr = [...["Swahili", "Yoruba", "Zulu", "Amharic"], ...["Swahili", "Yoruba", "Zulu", "Amharic"]];
+                document.getElementById('home-ticker').innerHTML = arr.map(l => `<span class="mx-6">• ${l}</span>`).join('');
+                
+                window.addEventListener('scroll', () => {
+                    const nav = document.getElementById('main-header');
+                    if(window.scrollY > 10) nav.classList.add('shadow-md');
+                    else nav.classList.remove('shadow-md');
+                });
+                App.ui.renderNavbar();
+            }
+        };
+
+        document.addEventListener("DOMContentLoaded", App.init);
+    </script>
+</body>
+</html>
